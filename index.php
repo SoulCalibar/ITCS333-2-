@@ -1,22 +1,23 @@
 <?php
-// API endpoint URL
 $apiUrl = 'https://data.gov.bh/api/explore/v2.1/catalog/datasets/01-statistics-of-students-nationalities_updated/records?where=colleges%20like%20%22IT%22%20AND%20the_programs%20like%20%22bachelor%22&limit=100';
-
-// Fetch data from the API
 $response = file_get_contents($apiUrl);
-
-// Check if the API call was successful
 if ($response === FALSE) {
     die('Error occurred while fetching data from the API');
 }
 
-// Decode the JSON response into a PHP array
 $data = json_decode($response, true);
 
-// Check if decoding was successful
 if ($data === NULL) {
     die('Error occurred while decoding JSON response');
 }
+
+echo '<pre>Raw JSON Response:<br>';
+echo $response;
+echo '</pre>';
+
+echo '<pre>Decoded JSON Array:<br>';
+print_r($data);
+echo '</pre>';
 
 $records = $data['records'];
 ?>
@@ -59,10 +60,10 @@ $records = $data['records'];
                 <tbody>
                     <?php foreach ($records as $record): ?>
                         <tr>
-                            <td><?php echo $record['colleges']; ?></td>
-                            <td><?php echo $record['the_programs']; ?></td>
-                            <td><?php echo $record['nationalities']; ?></td>
-                            <td><?php echo $record['count']; ?></td>
+                            <td><?php echo $record['fields']['colleges']; ?></td>
+                            <td><?php echo $record['fields']['the_programs']; ?></td>
+                            <td><?php echo $record['fields']['nationalities']; ?></td>
+                            <td><?php echo $record['fields']['count']; ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
